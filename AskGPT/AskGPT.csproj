@@ -7,6 +7,7 @@
     <Nullable>enable</Nullable>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>ask</ToolCommandName>
+    <PackageVersion>1.2.0</PackageVersion>
     <PackageOutputPath>.\PackageOutput</PackageOutputPath>
     <PackageId>AskGPT</PackageId>
     <PackageDescription>Ask ChatGPT questions from the command line.</PackageDescription>

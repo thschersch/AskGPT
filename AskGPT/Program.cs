@@ -44,6 +44,18 @@ if (File.Exists(historyPath))
 }
 
 //
+// Parse the prompt from the user
+//
+string prompt = String.Join(" ", args).Trim();
+
+if (string.IsNullOrWhiteSpace(prompt))
+{
+    Error($"You didn't provide a prompt. Please provide a prompt as the arguments to this program.\n\nFor example:\n\n{appName} Hello, how are you?\n");
+}
+while(prompt!="q")
+{
+
+//
 // Choose history to use - only the last 15 mins
 //
 var now = DateTimeOffset.Now;
@@ -51,14 +63,7 @@ var historyToUse = history
     .Where(message => (now - message.Timestamp).TotalMinutes <= 15)
     .ToArray();
 
-//
-// Parse the prompt from the user
-//
-string prompt = String.Join(" ", args).Trim();
-if (string.IsNullOrWhiteSpace(prompt))
-{
-    Error($"You didn't provide a prompt. Please provide a prompt as the arguments to this program.\n\nFor example:\n\n{appName} Hello, how are you?\n");
-}
+
 var promptMessage = new Message()
 {
     Role = "user",
@@ -119,7 +124,16 @@ history.Add(new HistoricMessage()
 });
 history = history.Skip(Math.Max(0, history.Count - 100)).ToList();
 await File.WriteAllLinesAsync(historyPath, history.Select(message => JsonSerializer.Serialize(message)));
+ Console.ForegroundColor = ConsoleColor.Cyan;
+    Console.WriteLine(">>");
+    Console.ResetColor();
+prompt = Console.ReadLine()!;
+if (prompt==string.Empty)
+{
+ Environment.Exit(0);
+}
 
+}
 //
 // Fini
 //
